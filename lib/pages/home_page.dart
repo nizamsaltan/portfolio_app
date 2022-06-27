@@ -281,10 +281,25 @@ Widget aboutScreen(BuildContext context) {
                             color: Colors.black, fontSize: 40)),
                     const SizedBox(height: 35),
                     SizedBox(
-                        width: 800,
-                        child: Text(aboutStr,
-                            style: lowerTextStyle.copyWith(
-                                color: Colors.black, fontSize: 20))),
+                      width: 750,
+                      child: Text(aboutStrFirst,
+                          style: lowerTextStyle.copyWith(
+                              color: Colors.black, fontSize: 20)),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 750,
+                      child: Text(aboutStrSecond,
+                          style: lowerTextStyle.copyWith(
+                              color: Colors.black, fontSize: 20)),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 750,
+                      child: Text(aboutStrThird,
+                          style: lowerTextStyle.copyWith(
+                              color: Colors.black, fontSize: 20)),
+                    ),
                     SizedBox(height: spancing),
                     Text('What I Do',
                         style: headerTextStyle.copyWith(
@@ -497,6 +512,27 @@ Widget contactScreen(BuildContext context) {
                   style: lowerTextStyle.copyWith(
                       color: Colors.black, fontSize: 20),
                 ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    child: Text(
+                      'Warning: ',
+                      style: lowerTextStyle.copyWith(
+                          color: Colors.redAccent, fontSize: 20),
+                    ),
+                  ),
+                  SizedBox(
+                    width: inputFieldWidth - 82,
+                    child: Text(
+                      'This form is under construction. Please contact me via other channels.',
+                      style: lowerTextStyle.copyWith(
+                          color: Colors.black, fontSize: 20),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 40),
               if (currentDevice != DeviceTypes.mobile)
