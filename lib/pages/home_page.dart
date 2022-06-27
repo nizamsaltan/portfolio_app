@@ -577,7 +577,7 @@ Widget contactChannels() {
         contactButton(
           _openGithubProfile,
           'assets/images/github_icon.png',
-          '@rafrach',
+          '@nizamsaltan',
         ),
         const SizedBox(height: 30),
         contactButton(
@@ -751,7 +751,7 @@ void _openMediumProfile() async {
 }
 
 void _openGithubProfile() async {
-  final Uri url = Uri.parse('https://github.com/Rafrach');
+  final Uri url = Uri.parse('https://github.com/nizamsaltan');
   if (!await launchUrl(url)) throw 'Could not launch $url';
   log('message');
 }
