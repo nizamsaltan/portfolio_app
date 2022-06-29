@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   url_launcher: ^6.1.4
   rive: ^0.9.0
+  firebase_core: ^1.18.0
   
 dev_dependencies:
   flutter_test:

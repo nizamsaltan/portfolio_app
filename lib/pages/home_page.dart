@@ -43,8 +43,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: WebSmoothScroll(
         controller: _scrollController,
-        scrollOffset: -10,
-        animationDuration: 150,
+        scrollOffset: 50,
+        animationDuration: 170,
         curve: Curves.decelerate,
         child: SingleChildScrollView(
             physics: currentDevice == DeviceTypes.desktop
