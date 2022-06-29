@@ -43,8 +43,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: WebSmoothScroll(
         controller: _scrollController,
-        scrollOffset: 50,
-        animationDuration: 300,
+        scrollOffset: -10,
+        animationDuration: 150,
         curve: Curves.decelerate,
         child: SingleChildScrollView(
             physics: currentDevice == DeviceTypes.desktop
@@ -72,20 +72,20 @@ Widget homeDesktopPage(BuildContext context) {
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),
-      topBar(context),
-      helloScreen(context),
-      scrollDownToSeeMore(context),
+      _topBar(context),
+      _helloScreen(context),
+      _scrollDownToSeeMore(context),
       Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height),
           SizedBox(height: spancing),
-          aboutScreen(context),
+          _aboutScreen(context),
           SizedBox(height: spancing),
-          mySkillsScreen(context),
+          _mySkillsScreen(context),
           SizedBox(height: spancing),
-          contactScreen(context),
+          _contactScreen(context),
           SizedBox(height: spancing),
-          bottomPanel(),
+          _bottomPanel(),
         ],
       ),
     ],
@@ -101,20 +101,20 @@ Widget homeTabletPage(BuildContext context) {
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),
-      topBar(context),
-      helloScreen(context),
-      scrollDownToSeeMore(context),
+      _topBar(context),
+      _helloScreen(context),
+      _scrollDownToSeeMore(context),
       Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height),
           SizedBox(height: spancing),
-          aboutScreen(context),
+          _aboutScreen(context),
           SizedBox(height: spancing),
-          mySkillsScreen(context),
+          _mySkillsScreen(context),
           SizedBox(height: spancing),
-          contactScreen(context),
+          _contactScreen(context),
           SizedBox(height: spancing),
-          bottomPanel(),
+          _bottomPanel(),
         ],
       ),
     ],
@@ -130,20 +130,20 @@ Widget homeMobilePage(BuildContext context) {
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.cover,
       ),
-      topBar(context),
-      helloScreen(context),
-      scrollDownToSeeMore(context),
+      _topBar(context),
+      _helloScreen(context),
+      _scrollDownToSeeMore(context),
       Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height),
           SizedBox(height: spancing),
-          aboutScreen(context),
+          _aboutScreen(context),
           SizedBox(height: spancing),
-          mySkillsScreen(context),
+          _mySkillsScreen(context),
           SizedBox(height: spancing),
-          contactScreen(context),
+          _contactScreen(context),
           SizedBox(height: spancing),
-          bottomPanel(),
+          _bottomPanel(),
         ],
       ),
     ],
@@ -152,11 +152,11 @@ Widget homeMobilePage(BuildContext context) {
 
 // ***** WIGDETS *****
 
-Widget topBar(BuildContext context) {
+Widget _topBar(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      topBarButton('Home', () {
+      _topBarButton('Home', () {
         final position = _scrollController.position.minScrollExtent;
         _scrollController.animateTo(
           position,
@@ -164,10 +164,10 @@ Widget topBar(BuildContext context) {
           curve: Curves.easeOut,
         );
       }),
-      topBarButton('Blog', () {
+      _topBarButton('Blog', () {
         _openMediumProfile();
       }),
-      topBarButton('About', () {
+      _topBarButton('About', () {
         double position = MediaQuery.of(context).size.height;
         _scrollController.animateTo(
           position,
@@ -175,7 +175,7 @@ Widget topBar(BuildContext context) {
           curve: Curves.easeOut,
         );
       }),
-      topBarButton('Contact', () {
+      _topBarButton('Contact', () {
         double position = MediaQuery.of(context).size.height + 1480;
         _scrollController.animateTo(
           position,
@@ -187,7 +187,7 @@ Widget topBar(BuildContext context) {
   );
 }
 
-Widget topBarButton(String text, Function? onPressed) {
+Widget _topBarButton(String text, Function? onPressed) {
   return OnHoverButton(
     builder: ((isHovered) {
       Color color =
@@ -208,7 +208,7 @@ Widget topBarButton(String text, Function? onPressed) {
   );
 }
 
-Widget helloScreen(BuildContext context) {
+Widget _helloScreen(BuildContext context) {
   return Column(children: [
     SizedBox(height: (MediaQuery.of(context).size.height / 2) - 100),
     Text('Hello;',
@@ -244,7 +244,7 @@ Widget helloScreen(BuildContext context) {
   ]);
 }
 
-Widget scrollDownToSeeMore(BuildContext context) {
+Widget _scrollDownToSeeMore(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -262,7 +262,7 @@ Widget scrollDownToSeeMore(BuildContext context) {
   );
 }
 
-Widget aboutScreen(BuildContext context) {
+Widget _aboutScreen(BuildContext context) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -305,13 +305,13 @@ Widget aboutScreen(BuildContext context) {
                         style: headerTextStyle.copyWith(
                             color: Colors.black, fontSize: 40)),
                     const SizedBox(height: 35),
-                    skillTree(const Icon(CupertinoIcons.gamecontroller_fill),
+                    _skillTree(const Icon(CupertinoIcons.gamecontroller_fill),
                         'Game Development', gameDevelopmentStr, 23, context),
                     const SizedBox(height: 25),
-                    skillTree(const Icon(CupertinoIcons.device_phone_portrait),
+                    _skillTree(const Icon(CupertinoIcons.device_phone_portrait),
                         'App Development', appDevelopmentStr, 41, context),
                     const SizedBox(height: 25),
-                    skillTree(const Icon(Icons.web_rounded), 'Web Development',
+                    _skillTree(const Icon(Icons.web_rounded), 'Web Development',
                         webDevelopmentStr, 38, context),
                     const SizedBox(height: 50),
                     CupertinoButton(
@@ -343,7 +343,7 @@ Widget aboutScreen(BuildContext context) {
   );
 }
 
-Widget skillTree(Icon icon, String text, String description, double distance,
+Widget _skillTree(Icon icon, String text, String description, double distance,
     BuildContext context) {
   if (currentDevice == DeviceTypes.mobile) {
     return Column(
@@ -399,7 +399,7 @@ Widget skillTree(Icon icon, String text, String description, double distance,
   }
 }
 
-Widget mySkillsScreen(BuildContext context) {
+Widget _mySkillsScreen(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: SizedBox(
@@ -444,17 +444,17 @@ Widget mySkillsScreen(BuildContext context) {
               ],
             ),
             const SizedBox(height: 40),
-            skillSlider('Unity', 0.95, Colors.greenAccent, context),
+            _skillSlider('Unity', 0.95, Colors.greenAccent, context),
             const SizedBox(height: 40),
-            skillSlider('Flutter', 0.7, Colors.blueAccent, context),
+            _skillSlider('Flutter', 0.7, Colors.blueAccent, context),
             const SizedBox(height: 40),
-            skillSlider('Unreal Engine', 0.4, Colors.purpleAccent, context),
+            _skillSlider('Unreal Engine', 0.4, Colors.purpleAccent, context),
           ]),
     ),
   );
 }
 
-Widget skillSlider(
+Widget _skillSlider(
     String name, double value, Color sliderColor, BuildContext context) {
   return OnHoverButton(
     builder: ((isHovered) {
@@ -476,7 +476,7 @@ Widget skillSlider(
   );
 }
 
-Widget contactScreen(BuildContext context) {
+Widget _contactScreen(BuildContext context) {
   double inputFieldWidth = currentDevice == DeviceTypes.mobile
       ? MediaQuery.of(context).size.width - 40
       : 610;
@@ -502,7 +502,7 @@ Widget contactScreen(BuildContext context) {
                 ),
               if (currentDevice != DeviceTypes.desktop)
                 const SizedBox(height: 35),
-              if (currentDevice != DeviceTypes.desktop) contactChannels(),
+              if (currentDevice != DeviceTypes.desktop) _contactChannels(),
               if (currentDevice != DeviceTypes.desktop)
                 const SizedBox(height: 50),
               SizedBox(
@@ -585,38 +585,38 @@ Widget contactScreen(BuildContext context) {
             ],
           ),
           if (currentDevice == DeviceTypes.desktop) const SizedBox(width: 100),
-          if (currentDevice == DeviceTypes.desktop) contactChannels(),
+          if (currentDevice == DeviceTypes.desktop) _contactChannels(),
         ],
       ),
     ),
   );
 }
 
-Widget contactChannels() {
+Widget _contactChannels() {
   if (currentDevice == DeviceTypes.desktop) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        contactButton(
+        _contactButton(
           _openMail,
           'assets/images/email_icon.png',
           'nizamsaltan@protonmail.com',
         ),
         const SizedBox(height: 30),
-        contactButton(
+        _contactButton(
           _openFiverrProfile,
           'assets/images/fiverr_icon.png',
           '@nizamsaltan',
         ),
         const SizedBox(height: 30),
-        contactButton(
+        _contactButton(
           _openGithubProfile,
           'assets/images/github_icon.png',
           '@nizamsaltan',
         ),
         const SizedBox(height: 30),
-        contactButton(
+        _contactButton(
           _openMediumProfile,
           'assets/images/medium_icon.png',
           '@nizamsaltan',
@@ -628,43 +628,35 @@ Widget contactChannels() {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        contactButton(
+        _contactButton(
           _openMail,
           'assets/images/email_icon.png',
           'nizamsaltan@protonmail.com',
         ),
         const SizedBox(width: 20),
-        contactButton(
+        _contactButton(
           _openFiverrProfile,
           'assets/images/fiverr_icon.png',
           '@nizamsaltan',
         ),
         const SizedBox(width: 20),
-        contactButton(
+        _contactButton(
           _openGithubProfile,
           'assets/images/github_icon.png',
           '@rafrach',
         ),
         const SizedBox(width: 20),
-        contactButton(
+        _contactButton(
           _openMediumProfile,
           'assets/images/medium_icon.png',
           '@nizamsaltan',
         ),
-        /*
-      const SizedBox(height: 30),
-      contactButton(
-        _openInstagramProfile,
-        'assets/images/instagram_icon.png',
-        '@niizamsaltan',
-      )
-      */
       ],
     );
   }
 }
 
-Widget contactButton(Function? onPressed, String iconPath, String text) {
+Widget _contactButton(Function? onPressed, String iconPath, String text) {
   return OnHoverButton(
     builder: ((isHovered) {
       return CupertinoButton(
@@ -720,7 +712,7 @@ Widget inputField(
   );
 }
 
-Widget bottomPanel() {
+Widget _bottomPanel() {
   return Container(
     height: 100,
     color: const Color.fromARGB(255, 44, 44, 44),

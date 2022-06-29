@@ -17,3 +17,17 @@ TextStyle lowerTextStyle = const TextStyle(
   color: Colors.white,
   fontFamily: 'BarlowLight',
 );
+
+// *** TTEAM STYLES ***
+
+TextStyle ttHeaderTextStyle = const TextStyle(
+  fontSize: 36,
+  color: Color.fromARGB(255, 189, 243, 71),
+  fontFamily: 'Codec',
+);
+
+TextStyle ttLowerTextStyle = const TextStyle(
+  fontSize: 16,
+  color: Colors.white,
+  fontFamily: 'Codec',
+);

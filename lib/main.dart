@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_app/pages/home_page.dart';
+import 'package:portfolio_app/pages/tteam_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,10 +11,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(primaryColor: Colors.grey[900]),
       debugShowCheckedModeBanner: false,
       title: 'Nizam Saltan',
-      home: HomePage(),
+      initialRoute: '/tteam',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/tteam': (context) => const TTeamPage(),
+      },
     );
   }
 }
