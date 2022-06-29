@@ -26,6 +26,19 @@ TextStyle ttHeaderTextStyle = const TextStyle(
   fontFamily: 'Codec',
 );
 
+TextStyle ttSecondaryHeaderTextStyle = const TextStyle(
+  fontSize: 36,
+  color: Colors.white,
+  fontFamily: 'Garet',
+  fontWeight: FontWeight.bold,
+);
+
+TextStyle ttStandardTextStyle = const TextStyle(
+  fontSize: 22,
+  color: Colors.white,
+  fontFamily: 'Codec',
+);
+
 TextStyle ttLowerTextStyle = const TextStyle(
   fontSize: 16,
   color: Colors.white,

@@ -88,6 +88,9 @@ flutter:
    - family: Codec
      fonts:
        - asset: assets/fonts/codec/CodecPro-Regular.ttf
+   - family: Garet
+     fonts:
+       - asset: assets/fonts/garet/Garet-Book.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
