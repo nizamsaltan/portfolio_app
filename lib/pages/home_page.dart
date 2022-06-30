@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:portfolio_app/responsive_layout.dart';
 import 'package:portfolio_app/utils/button_animations.dart';
 import 'package:portfolio_app/utils/long_texts.dart';
 import 'package:portfolio_app/utils/text_styles.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,21 +41,24 @@ class _HomePageState extends State<HomePage> {
       currentDevice = DeviceTypes.desktop;
     }
     return Scaffold(
-      body: WebSmoothScroll(
+      body: SingleChildScrollView(
+        physics: currentDevice == DeviceTypes.desktop
+            ? const NeverScrollableScrollPhysics()
+            : null,
         controller: _scrollController,
-        scrollOffset: 50,
-        animationDuration: 170,
-        curve: Curves.decelerate,
-        child: SingleChildScrollView(
-            physics: currentDevice == DeviceTypes.desktop
-                ? const NeverScrollableScrollPhysics()
-                : null,
-            controller: _scrollController,
-            child: ResponsiveLayout(
-              desktopPage: homeDesktopPage(context),
-              tabletPage: homeTabletPage(context),
-              mobilePage: homeMobilePage(context),
-            )),
+        child: Listener(
+          onPointerSignal: (PointerSignalEvent event) {
+            if (event is PointerScrollEvent) {
+              //print(event.scrollDelta.dy.toInt().clamp(-1, 1));
+              _setScrollPosition(event.scrollDelta.dy.toInt().clamp(-1, 1));
+            }
+          },
+          child: ResponsiveLayout(
+            desktopPage: homeDesktopPage(context),
+            tabletPage: homeTabletPage(context),
+            mobilePage: homeMobilePage(context),
+          ),
+        ),
       ),
     );
   }
@@ -66,6 +69,11 @@ class _HomePageState extends State<HomePage> {
 Widget homeDesktopPage(BuildContext context) {
   return Stack(
     children: [
+      Container(
+        height: 3000,
+        width: MediaQuery.of(context).size.width,
+        color: Theme.of(context).canvasColor,
+      ),
       Image(
         image: const AssetImage("assets/images/home_page_bg.jpg"),
         height: MediaQuery.of(context).size.height,
@@ -788,4 +796,15 @@ void _openMail() async {
   final Uri url = Uri.parse('mailto:${'nizamsaltan@protonmail.com'}');
   if (!await launchUrl(url)) throw 'Could not launch $url';
   log('message');
+}
+
+double _currentScrollPosition = 0;
+void _setScrollPosition(int index) {
+  // index: 1, -1 (1: down, -1: up)
+  _currentScrollPosition += (150 * index);
+  _scrollController.animateTo(
+    _currentScrollPosition,
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.easeOut,
+  );
 }

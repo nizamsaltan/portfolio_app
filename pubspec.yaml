@@ -30,12 +30,12 @@ dependencies:
   flutter:
     sdk: flutter
   animated_text_kit: ^4.2.2
-  web_smooth_scroll: ^1.0.0
   sprung: ^3.0.0
   cupertino_icons: ^1.0.2
   url_launcher: ^6.1.4
   rive: ^0.9.0
   firebase_core: ^1.18.0
+  firebase_analytics: ^9.1.10
   
 dev_dependencies:
   flutter_test:
