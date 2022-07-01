@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:portfolio_app/responsive_layout.dart';
 import 'package:portfolio_app/utils/button_animations.dart';
 import 'package:portfolio_app/utils/long_texts.dart';
@@ -17,17 +19,26 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+late final AnimationController _controller;
+late final AnimationController _whoAmIcontroller;
 late ScrollController _scrollController;
-
 double spancing = 75;
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
-    // initialize scroll controllers
-    _scrollController = ScrollController();
-
     super.initState();
+    _scrollController = ScrollController();
+    _controller = AnimationController(vsync: this);
+    _whoAmIcontroller = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _controller.dispose();
+    _whoAmIcontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,9 +65,9 @@ class _HomePageState extends State<HomePage> {
             }
           },
           child: ResponsiveLayout(
-            desktopPage: homeDesktopPage(context),
-            tabletPage: homeTabletPage(context),
-            mobilePage: homeMobilePage(context),
+            desktopPage: mainPage(context),
+            tabletPage: mainPage(context),
+            mobilePage: mainPage(context),
           ),
         ),
       ),
@@ -66,7 +77,7 @@ class _HomePageState extends State<HomePage> {
 
 // *** PAGES ***
 
-Widget homeDesktopPage(BuildContext context) {
+Widget mainPage(BuildContext context) {
   return Stack(
     children: [
       Container(
@@ -81,66 +92,10 @@ Widget homeDesktopPage(BuildContext context) {
         fit: BoxFit.cover,
       ),
       _topBar(context),
-      _helloScreen(context),
-      _scrollDownToSeeMore(context),
-      Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height),
-          SizedBox(height: spancing),
-          _aboutScreen(context),
-          SizedBox(height: spancing),
-          _mySkillsScreen(context),
-          SizedBox(height: spancing),
-          _contactScreen(context),
-          SizedBox(height: spancing),
-          _bottomPanel(),
-        ],
-      ),
-    ],
-  );
-}
+      //_helloScreen(context),
 
-Widget homeTabletPage(BuildContext context) {
-  return Stack(
-    children: [
-      Image(
-        image: const AssetImage("assets/images/home_page_bg.jpg"),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
-      ),
-      _topBar(context),
-      _helloScreen(context),
       _scrollDownToSeeMore(context),
-      Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height),
-          SizedBox(height: spancing),
-          _aboutScreen(context),
-          SizedBox(height: spancing),
-          _mySkillsScreen(context),
-          SizedBox(height: spancing),
-          _contactScreen(context),
-          SizedBox(height: spancing),
-          _bottomPanel(),
-        ],
-      ),
-    ],
-  );
-}
-
-Widget homeMobilePage(BuildContext context) {
-  return Stack(
-    children: [
-      Image(
-        image: const AssetImage("assets/images/home_page_bg.jpg"),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
-      ),
-      _topBar(context),
-      _helloScreen(context),
-      _scrollDownToSeeMore(context),
+      const HelloScreen(),
       Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height),
@@ -177,6 +132,7 @@ Widget _topBar(BuildContext context) {
       }),
       _topBarButton('About', () {
         double position = MediaQuery.of(context).size.height;
+        _currentScrollPosition = position;
         _scrollController.animateTo(
           position,
           duration: const Duration(seconds: 1),
@@ -185,6 +141,7 @@ Widget _topBar(BuildContext context) {
       }),
       _topBarButton('Contact', () {
         double position = MediaQuery.of(context).size.height + 1480;
+        _currentScrollPosition = position;
         _scrollController.animateTo(
           position,
           duration: const Duration(seconds: 1),
@@ -216,40 +173,94 @@ Widget _topBarButton(String text, Function? onPressed) {
   );
 }
 
-Widget _helloScreen(BuildContext context) {
-  return Column(children: [
-    SizedBox(height: (MediaQuery.of(context).size.height / 2) - 100),
-    Text('Hello;',
-        style: standardTextStyle.copyWith(
-            fontSize: 100, fontWeight: FontWeight.w600)),
-    Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+bool isWebLoaded = false;
+bool isSplashScreenEnd = false;
+
+class HelloScreen extends StatefulWidget {
+  const HelloScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HelloScreen> createState() => _HelloScreenState();
+}
+
+class _HelloScreenState extends State<HelloScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
       children: [
-        Text('I\'m Nizam Saltan, ',
-            style: lowerTextStyle.copyWith(fontSize: 18)),
-        AnimatedTextKit(
-          repeatForever: true,
-          animatedTexts: [
-            TypewriterAnimatedText(
-              'App Developer',
-              speed: const Duration(milliseconds: 100),
-              textStyle: lowerTextStyle.copyWith(fontSize: 18),
+        if (!isSplashScreenEnd)
+          AnimatedOpacity(
+            opacity: isWebLoaded ? 0.0 : 1.0,
+            duration: const Duration(milliseconds: 450),
+            onEnd: () {
+              setState(() {
+                isSplashScreenEnd = true;
+              });
+            },
+            child: Container(
+              color: Colors.black,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: const Text(''),
             ),
-            TypewriterAnimatedText(
-              'Game Developer',
-              speed: const Duration(milliseconds: 100),
-              textStyle: lowerTextStyle.copyWith(fontSize: 18),
+          ),
+        Column(children: [
+          SizedBox(height: (MediaQuery.of(context).size.height / 2) - 100),
+          Lottie.asset(
+            'assets/lottie/hello_anim.json',
+            height: 130,
+            repeat: false,
+            controller: _controller,
+            onLoaded: (composition) {
+              _controller
+                ..duration = composition.duration
+                ..forward();
+              Timer(
+                  Duration(
+                      milliseconds: composition.duration.inMilliseconds - 1000),
+                  () {
+                setState(() {
+                  isWebLoaded = true;
+                });
+              });
+            },
+          ),
+          //Text('Hello;', style: standardTextStyle.copyWith(fontSize: 100)),
+          AnimatedOpacity(
+            opacity: isWebLoaded ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('I\'m Nizam Saltan, ',
+                    style: lowerTextStyle.copyWith(fontSize: 18)),
+                AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'App Developer',
+                      speed: const Duration(milliseconds: 100),
+                      textStyle: lowerTextStyle.copyWith(fontSize: 18),
+                    ),
+                    TypewriterAnimatedText(
+                      'Game Developer',
+                      speed: const Duration(milliseconds: 100),
+                      textStyle: lowerTextStyle.copyWith(fontSize: 18),
+                    ),
+                    TypewriterAnimatedText(
+                      'Web Developer',
+                      speed: const Duration(milliseconds: 100),
+                      textStyle: lowerTextStyle.copyWith(fontSize: 18),
+                    )
+                  ],
+                ),
+              ],
             ),
-            TypewriterAnimatedText(
-              'Web Developer',
-              speed: const Duration(milliseconds: 100),
-              textStyle: lowerTextStyle.copyWith(fontSize: 18),
-            )
-          ],
-        ),
+          ),
+        ]),
       ],
-    ),
-  ]);
+    );
+  }
 }
 
 Widget _scrollDownToSeeMore(BuildContext context) {
@@ -263,7 +274,8 @@ Widget _scrollDownToSeeMore(BuildContext context) {
           Text('Scroll Down To See More',
               style: standardTextStyle.copyWith(fontSize: 16)),
           const SizedBox(height: 10),
-          Icon(CupertinoIcons.down_arrow, color: standardTextStyle.color),
+          //Icon(CupertinoIcons.down_arrow, color: standardTextStyle.color),
+          Lottie.asset('assets/lottie/scroll_anim.json', height: 50),
         ],
       ),
     ],
@@ -801,7 +813,7 @@ void _openMail() async {
 double _currentScrollPosition = 0;
 void _setScrollPosition(int index) {
   // index: 1, -1 (1: down, -1: up)
-  _currentScrollPosition += (150 * index);
+  _currentScrollPosition += (175 * index);
   _scrollController.animateTo(
     _currentScrollPosition,
     duration: const Duration(milliseconds: 300),
